@@ -1,35 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import TodoListItem from "./TodoListItem";
 import NewTodoForm from "./NewTodoForm";
+import { connect } from "react-redux";
+import { removeTodo, markAsCompletedTodo } from "../store/action";
 
-const ToDoList = () => {
-  const [todos, setTodos] = useState([]);
-
-  const pushNewTodo = (newTodo) => {
-    setTodos([...todos, newTodo]);
-  };
-  const popTodo = (ptodo) => {
-    setTodos(todos.filter((todo) => todo.text !== ptodo));
-  };
-  const updateTodo = (utodo) => {
-    const updatedTodo = todos.map((todo) => {
-      if (todo.text === utodo.text) {
-        todo.checked = !todo.checked;
-      }
-      return todo;
-    });
-    setTodos(updatedTodo);
-  };
+const ToDoList = ({ todos = [], onRemovePressed, onCompletedPressed }) => {
   return (
     <div className="list-wrapper">
-      <NewTodoForm addTodos={pushNewTodo} />
+      <NewTodoForm />
       {todos.length > 0 ? (
         todos.map((todo) => (
           <TodoListItem
             todo={todo}
             key={todo.text}
-            removeTodo={popTodo}
-            updateAsCompletedTodo={updateTodo}
+            onRemovePressed={onRemovePressed}
+            onCompletedPressed={onCompletedPressed}
           />
         ))
       ) : (
@@ -41,4 +26,13 @@ const ToDoList = () => {
   );
 };
 
-export default ToDoList;
+const mapStateToProps = (state) => ({
+  todos: state.todos,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onRemovePressed: (text) => dispatch(removeTodo(text)),
+  onCompletedPressed: (text) => dispatch(markAsCompletedTodo(text)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ToDoList);

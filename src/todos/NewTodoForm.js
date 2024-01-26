@@ -1,12 +1,15 @@
-import { useState } from "react";
 import React from "react";
-
-const NewTodoForm = ({ addTodos }) => {
+import { connect } from "react-redux";
+import { createTodo } from "../store/action";
+const NewTodoForm = ({ todos, onCreatePressed }) => {
   const addNewTodos = (event) => {
     event.preventDefault();
-    const newTodoValue = event.target.newInput.value;
-    addTodos({ text: newTodoValue, checked: false });
-    event.target.reset();
+    const newTodo = event.target.newInput.value;
+    const isDuplicateText = todos.some((todo) => todo.text === newTodo);
+    if (!isDuplicateText && newTodo) {
+      onCreatePressed(newTodo);
+      event.target.reset();
+    }
   };
   return (
     <form onSubmit={addNewTodos} className="new-todo-form">
@@ -22,5 +25,11 @@ const NewTodoForm = ({ addTodos }) => {
     </form>
   );
 };
+const mapStateToProps = (state) => ({
+  todos: state.todos,
+});
+const mapDispatchToProps = (dispatch) => ({
+  onCreatePressed: (text) => dispatch(createTodo(text)),
+});
 
-export default NewTodoForm;
+export default connect(mapStateToProps, mapDispatchToProps)(NewTodoForm);

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-const TodoListItem = ({ todo, removeTodo, updateAsCompletedTodo }) => {
-  const [isChecked, setIsChecked] = useState(todo.checked);
+const TodoListItem = ({ todo, onRemovePressed,onCompletedPressed}) => {
+  const [isChecked, setIsChecked] = useState(todo.isCompleted);
   const handleCheckboxChange = () => {
-    setIsChecked(todo.checked);
+    setIsChecked(todo.isCompleted);
   };
   useEffect(() => {
     handleCheckboxChange();
-  }, [todo.checked]);
+  }, [todo.isCompleted]);
   return (
     <div className="list-item">
       <input
@@ -21,11 +21,11 @@ const TodoListItem = ({ todo, removeTodo, updateAsCompletedTodo }) => {
       <div className="btn-container">
         <button
           className="completed"
-          onClick={() => updateAsCompletedTodo(todo)}
+          onClick={() => onCompletedPressed(todo.text)}
         >
           Mark as Completed
         </button>
-        <button className="remove" onClick={() => removeTodo(todo.text)}>
+        <button className="remove" onClick={() => onRemovePressed(todo.text)}>
           Remove
         </button>
       </div>
