@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const TodoListItem = ({ todo, onRemovePressed,onCompletedPressed}) => {
+const TodoListItem = ({ todo, onRemovePressed, onCompletedPressed }) => {
   const [isChecked, setIsChecked] = useState(todo.isCompleted);
   const handleCheckboxChange = () => {
     setIsChecked(todo.isCompleted);
@@ -21,11 +21,11 @@ const TodoListItem = ({ todo, onRemovePressed,onCompletedPressed}) => {
       <div className="btn-container">
         <button
           className="completed"
-          onClick={() => onCompletedPressed(todo.text)}
+          onClick={() => onCompletedPressed(todo.id)}
         >
           Mark as Completed
         </button>
-        <button className="remove" onClick={() => onRemovePressed(todo.text)}>
+        <button className="remove" onClick={() => onRemovePressed(todo.id)}>
           Remove
         </button>
       </div>

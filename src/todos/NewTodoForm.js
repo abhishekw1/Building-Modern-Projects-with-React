@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { createTodo } from "../store/action";
+import { addTodoRequest } from "../store/thunks";
+import { getTodos } from "../store/selector";
 const NewTodoForm = ({ todos, onCreatePressed }) => {
   const addNewTodos = (event) => {
     event.preventDefault();
@@ -26,10 +27,10 @@ const NewTodoForm = ({ todos, onCreatePressed }) => {
   );
 };
 const mapStateToProps = (state) => ({
-  todos: state.todos,
+  todos: getTodos(state),
 });
 const mapDispatchToProps = (dispatch) => ({
-  onCreatePressed: (text) => dispatch(createTodo(text)),
+  onCreatePressed: (text) => dispatch(addTodoRequest(text)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewTodoForm);
